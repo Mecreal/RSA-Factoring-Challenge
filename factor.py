@@ -39,39 +39,71 @@ def file_h(file_path):
 
 
 def factor(n):
-    """
-    Find and return a pair of factors for a given number.
+    # """
+    # Find and return a pair of factors for a given number.
 
-    The function searches for two numbers such that their product
-    equals n.
-    It starts from the smallest factor (2) and goes up to the square
-    root of n.
-    If no factors are found, it returns 1 and n as a fallback.
+    # The function searches for two numbers such that their product
+    # equals n.
+    # It starts from the smallest factor (2) and goes up to the square
+    # root of n.
+    # If no factors are found, it returns 1 and n as a fallback.
+
+    # Parameters:
+    # n (int): The number to be factorized.
+
+    # Returns:
+    # tuple: A tuple containing two factors of n.
+
+    # """
+    # # i = 2
+    # # while (n % i) != 0:
+    # #     i += 1
+    # # return (n // i, i)
+
+    # if n % 2 == 0:
+    #     return n // 2, 2
+    # elif n % 3 == 0:
+    #     return n // 3, 3
+
+    # i = 5
+    # w = 2
+
+    # while i * i <= n:
+    #     if n % i == 0:
+    #         return n // i, i
+    #     i += w
+    #     w = 6 - w  # Alternates between adding 2 and 4
+
+    # return n, 1  # n is prime
+    """
+    Find and return a pair of factors for a given number using an optimized
+    wheel factorization method. This function is deterministic.
 
     Parameters:
-    n (int): The number to be factorized.
+    n (int): The number to be factorized. Assumes n is a non-zero integer.
 
     Returns:
     tuple: A tuple containing two factors of n.
-
     """
-    # i = 2
-    # while (n % i) != 0:
-    #     i += 1
-    # return (n // i, i)
+    if n < 0:
+        n = -n
 
-    if n % 2 == 0:
-        return n // 2, 2
-    elif n % 3 == 0:
-        return n // 3, 3
+    if n in [1, 2, 3, 5]:
+        return n, 1
 
-    i = 5
-    w = 2
+    # Check for divisibility by 2, 3, and 5
+    for p in [2, 3, 5]:
+        if n % p == 0:
+            return n // p, p
 
+    # Wheel to skip numbers not coprime to 2, 3, 5
+    wheel = [4, 2, 4, 2, 4, 6, 2, 6]
+    w = 0
+    i = 7
     while i * i <= n:
         if n % i == 0:
             return n // i, i
-        i += w
-        w = 6 - w  # Alternates between adding 2 and 4
+        i += wheel[w]
+        w = (w + 1) % 8
 
-    return n, 1  # n is prime
+    return n, 1  # n is prime or 1
